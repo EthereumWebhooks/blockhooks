@@ -38,12 +38,12 @@ DEFAULT_GUESTBOOK_NAME = 'default_guestbook'
 # will be consistent. However, the write rate should be limited to
 # ~1/second.
 
-def guestbook_key(guestbook_name=DEFAULT_GUESTBOOK_NAME):
+def guestbook_key():
     """Constructs a Datastore key for a Guestbook entity.
 
-    We use guestbook_name as the key.
+    We use DEFAULT_GUESTBOOK_NAME as the key.
     """
-    return ndb.Key('Guestbook', guestbook_name)
+    return ndb.Key('Guestbook', DEFAULT_GUESTBOOK_NAME)
 
 
 # [START greeting]
@@ -65,24 +65,17 @@ class Greeting(ndb.Model):
 class MainPage(webapp2.RequestHandler):
 
     def get(self):
-        guestbook_name = self.request.get('guestbook_name',
-                                          DEFAULT_GUESTBOOK_NAME)
         greetings_query = Greeting.query(
-            ancestor=guestbook_key(guestbook_name)).order(-Greeting.date)
+            ancestor=guestbook_key()).order(-Greeting.date)
         greetings = greetings_query.fetch(10)
 
         user = users.get_current_user()
-        if user:
-            url = users.create_logout_url(self.request.uri)
-            url_linktext = 'Logout'
-        else:
-            url = users.create_login_url(self.request.uri)
-            url_linktext = 'Login'
+	url = users.create_login_url(self.request.uri)
+	url_linktext = 'Login'
 
         template_values = {
             'user': user,
             'greetings': greetings,
-            'guestbook_name': urllib.quote_plus(guestbook_name),
             'url': url,
             'url_linktext': url_linktext,
         }
@@ -101,9 +94,7 @@ class BlockHook(webapp2.RequestHandler):
         # single entity group will be consistent. However, the write
         # rate to a single entity group should be limited to
         # ~1/second.
-        guestbook_name = self.request.get('guestbook_name',
-                                          DEFAULT_GUESTBOOK_NAME)
-        greeting = Greeting(parent=guestbook_key(guestbook_name))
+        greeting = Greeting(parent=guestbook_key())
 
         if users.get_current_user():
             greeting.author = Author(
@@ -113,7 +104,6 @@ class BlockHook(webapp2.RequestHandler):
         greeting.content = self.request.get('content')
         greeting.put()
 
-        query_params = {'guestbook_name': guestbook_name}
         self.redirect('/')
 # [END blockhook]
 
