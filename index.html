@@ -47,6 +47,13 @@
       </div>
     </div>
     <div class="container">
+      <form action="/sign?guestbook_name={{ guestbook_name }}" method="post">
+        <div>Contract Address: <textarea name="content" class="input-block-level" rows="1"></textarea></div>
+	<div>ABI: <textarea name="abi" class="input-block-level" rows="1"></textarea></div>
+	<div>URL: <textarea name="url" class="input-block-level" rows="1"></textarea></div>
+        <div><input type="submit" class="btn btn-large btn-primary" value="Add BlockHook"></div>
+      </form>
+      <hr>
       <!-- [START greetings] -->
       {% for greeting in greetings %}
       <div class="row">
@@ -64,12 +71,6 @@
       {% endfor %}
       <!-- [END greetings] -->
 
-      <form action="/sign?guestbook_name={{ guestbook_name }}" method="post">
-        <div><textarea name="content" class="input-block-level" rows="3"></textarea></div>
-        <div><input type="submit" class="btn btn-large btn-primary" value="Add BlockHook"></div>
-      </form>
-
-      <hr>
     </div>
   </body>
 </html>
