@@ -31,6 +31,7 @@
         overflow: scroll;
       }
     </style>
+    <title>BlockHooks</title>
   </head>
   <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -41,10 +42,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="brand" href="#">App Engine Guestbook</a>
-          <div class="nav-collapse collapse pull-right">
-            <a href="{{ url|safe }}" class="btn">{{ url_linktext }}</a>
-          </div>
+          <a class="brand" href="#">Blockhooks</a>
         </div>
       </div>
     </div>
@@ -68,17 +66,10 @@
 
       <form action="/sign?guestbook_name={{ guestbook_name }}" method="post">
         <div><textarea name="content" class="input-block-level" rows="3"></textarea></div>
-        <div><input type="submit" class="btn btn-large btn-primary" value="Sign Guestbook"></div>
+        <div><input type="submit" class="btn btn-large btn-primary" value="Add BlockHook"></div>
       </form>
 
       <hr>
-
-      <form>Guestbook name:
-        <input value="{{ guestbook_name }}" name="guestbook_name">
-        <input type="submit" value="switch">
-      </form>
-
-      <a href="{{ url|safe }}">{{ url_linktext }}</a>
     </div>
   </body>
 </html>
