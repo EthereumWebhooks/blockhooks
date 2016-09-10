@@ -92,8 +92,8 @@ class MainPage(webapp2.RequestHandler):
 # [END main_page]
 
 
-# [START guestbook]
-class Guestbook(webapp2.RequestHandler):
+# [START blockhook]
+class BlockHook(webapp2.RequestHandler):
 
     def post(self):
         # We set the same parent key on the 'Greeting' to ensure each
@@ -114,13 +114,13 @@ class Guestbook(webapp2.RequestHandler):
         greeting.put()
 
         query_params = {'guestbook_name': guestbook_name}
-        self.redirect('/?' + urllib.urlencode(query_params))
-# [END guestbook]
+        self.redirect('/')
+# [END blockhook]
 
 
 # [START app]
 app = webapp2.WSGIApplication([
     ('/', MainPage),
-    ('/sign', Guestbook),
+    ('/addblockhook', BlockHook),
 ], debug=True)
 # [END app]
