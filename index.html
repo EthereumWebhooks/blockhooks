@@ -42,7 +42,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="brand" href="#">Blockhooks</a>
+          <a class="brand" href="#">BlockHooks</a>
         </div>
       </div>
     </div>
@@ -57,15 +57,6 @@
       <!-- [START greetings] -->
       {% for greeting in greetings %}
       <div class="row">
-        {% if greeting.author %}
-          <b>{{ greeting.author.email }}
-            {% if user and user.user_id() == greeting.author.identity %}
-              (You)
-            {% endif %}
-          </b> wrote:
-        {% else %}
-          An anonymous person wrote:
-        {% endif %}
         <blockquote>{{ greeting.content }}</blockquote>
       </div>
       {% endfor %}
