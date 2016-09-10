@@ -13,6 +13,6 @@ handlers:
   static_dir: bootstrap
 
 - url: /.*
-  script: guestbook.app
+  script: blockhooks.app
 # [END handlers]
 
