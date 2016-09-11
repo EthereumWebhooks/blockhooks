@@ -32,11 +32,27 @@ JINJA_ENVIRONMENT = jinja2.Environment(
     autoescape=True)
 # [END imports]
 
+DEFAULT_BLOCKHOOKS_LIST_NAME = 'default_guestbook'
+
+
+# We set a parent key on the 'Greetings' to ensure that they are all
+# in the same entity group. Queries across the single entity group
+# will be consistent. However, the write rate should be limited to
+# ~1/second.
+
+def blockhooks_key():
+    """Constructs a Datastore key for a Blockhooks entity.
+
+    We use DEFAULT_BLOCKHOOKS_LIST_NAME as the key.
+    """
+    return ndb.Key('Hook', DEFAULT_BLOCKHOOKS_LIST_NAME)
+
 # [START main_page]
 class MainPage(webapp2.RequestHandler):
 
     def get(self):
-        blockhooks_query = models.Hook.query().order(-models.Hook.address)
+        blockhooks_query = models.Hook.query(
+            ancestor=blockhooks_key()).order(-models.Hook.address)
         blockhooks = blockhooks_query.fetch(10)
 
         template_values = {
@@ -53,7 +69,7 @@ class BlockHook(webapp2.RequestHandler):
 
     def post(self):
 	if self.request.get('addhook'):
-		blockhooks = models.Hook()
+		blockhooks = models.Hook(parent=blockhooks_key())
 		blockhooks.address = self.request.get('address')
 		blockhooks.abi = json.loads(self.request.get('abi'))
 		blockhooks.uri = self.request.get('uri')
@@ -65,7 +81,6 @@ class BlockHook(webapp2.RequestHandler):
 
         self.redirect('/')
 # [END blockhook]
-
 
 # [START app]
 app = webapp2.WSGIApplication([
