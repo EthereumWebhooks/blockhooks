@@ -47,7 +47,7 @@
       </div>
     </div>
     <div class="container">
-      <form action="/addblockhook" method="post">
+      <form action="/updateblockhooks" method="post">
         <div>Contract Address: <textarea name="address" class="input-block-level" rows="1"></textarea></div>
 	<div>ABI: <textarea name="abi" class="input-block-level" rows="3"></textarea></div>
 	<div>URI: <textarea name="uri" class="input-block-level" rows="1"></textarea></div>
@@ -60,9 +60,9 @@
       <!-- [START greetings] -->
       {% for blockhooks in blockhooks %}
       <blockquote>
-        <div>Contract Address: {{ blockhooks.address }}</div>
-        <div>ABI: {{ blockhooks.abi }}</div>
-        <div>URI: {{ blockhooks.uri }}</div>
+        <div><strong>Contract Address:</strong> {{ blockhooks.address }}</div>
+        <div><strong>ABI:</strong> {{ blockhooks.abi }}</div>
+        <div><strong>URI:</strong> {{ blockhooks.uri }}</div>
       </blockquote>
       {% endfor %}
       </ul>

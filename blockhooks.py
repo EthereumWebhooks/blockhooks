@@ -85,6 +85,6 @@ class BlockHook(webapp2.RequestHandler):
 # [START app]
 app = webapp2.WSGIApplication([
     ('/', MainPage),
-    ('/addblockhook', BlockHook),
+    ('/updateblockhooks', BlockHook),
 ], debug=True)
 # [END app]
