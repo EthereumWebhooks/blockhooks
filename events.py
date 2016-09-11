@@ -51,8 +51,8 @@ def notifyHook(hook, log):
 def processLog(log):
     topics = log['topics']
     eventId = topics[0].lower()
-    logging.info("Log for %s", eventId)
     address = log['address'].lower()
+    logging.info("Log for %s from %s", eventId, address)
     if len(topics) == 0:
         return
     q = models.Hook.query(models.Hook.eventId == eventId, ndb.OR(

@@ -15,6 +15,7 @@
 # limitations under the License.
 
 # [START imports]
+import json
 import os
 import urllib
 
@@ -69,7 +70,7 @@ class BlockHook(webapp2.RequestHandler):
     def post(self):
         blockhooks = models.Hook(parent=blockhooks_key())
         blockhooks.address = self.request.get('address')
-        blockhooks.abi = self.request.get('abi')
+        blockhooks.abi = json.loads(self.request.get('abi'))
         blockhooks.uri = self.request.get('uri')
         blockhooks.put()
 
