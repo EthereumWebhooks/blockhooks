@@ -23,6 +23,7 @@ from google.appengine.ext import ndb
 
 import jinja2
 import webapp2
+import models
 
 JINJA_ENVIRONMENT = jinja2.Environment(
     loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
@@ -45,22 +46,12 @@ def blockhooks_key():
     """
     return ndb.Key('Hook', DEFAULT_BLOCKHOOKS_LIST_NAME)
 
-
-# [START blockhooks]
-class Hook(ndb.Model):
-    """A main model for representing an individual BlockHooks entry."""
-    address = ndb.StringProperty(indexed=True, required=True, default="") # Address of the contract sending the event
-    abi = ndb.JsonProperty(indexed=False, required=True)    # ABI for event
-    uri = ndb.StringProperty(indexed=False)                 # URI (possibly templated) to query
-# [END blockhooks]
-
-
 # [START main_page]
 class MainPage(webapp2.RequestHandler):
 
     def get(self):
-        blockhooks_query = Hook.query(
-            ancestor=blockhooks_key()).order(-Hook.address)
+        blockhooks_query = models.Hook.query(
+            ancestor=blockhooks_key()).order(-models.Hook.address)
         blockhooks = blockhooks_query.fetch(10)
 
         template_values = {
@@ -76,12 +67,7 @@ class MainPage(webapp2.RequestHandler):
 class BlockHook(webapp2.RequestHandler):
 
     def post(self):
-        # We set the same parent key on the 'Greeting' to ensure each
-        # Greeting is in the same entity group. Queries across the
-        # single entity group will be consistent. However, the write
-        # rate to a single entity group should be limited to
-        # ~1/second.
-        blockhooks = Hook(parent=blockhooks_key())
+        blockhooks = models.Hook(parent=blockhooks_key())
         blockhooks.address = self.request.get('address')
         blockhooks.abi = self.request.get('abi')
         blockhooks.uri = self.request.get('uri')
