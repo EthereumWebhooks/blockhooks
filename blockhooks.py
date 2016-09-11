@@ -69,15 +69,8 @@ class MainPage(webapp2.RequestHandler):
             ancestor=guestbook_key()).order(-Greeting.date)
         greetings = greetings_query.fetch(10)
 
-        user = users.get_current_user()
-	url = users.create_login_url(self.request.uri)
-	url_linktext = 'Login'
-
         template_values = {
-            'user': user,
             'greetings': greetings,
-            'url': url,
-            'url_linktext': url_linktext,
         }
 
         template = JINJA_ENVIRONMENT.get_template('index.html')
