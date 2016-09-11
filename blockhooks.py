@@ -95,13 +95,7 @@ class BlockHook(webapp2.RequestHandler):
         # rate to a single entity group should be limited to
         # ~1/second.
         greeting = Greeting(parent=guestbook_key())
-
-        if users.get_current_user():
-            greeting.author = Author(
-                    identity=users.get_current_user().user_id(),
-                    email=users.get_current_user().email())
-
-        greeting.content = self.request.get('content')
+        greeting.content = self.request.get('address')
         greeting.put()
 
         self.redirect('/')
