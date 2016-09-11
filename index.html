@@ -55,9 +55,9 @@
       </form>
       <hr>
       <!-- [START greetings] -->
-      {% for greeting in greetings %}
+      {% for blockhooks in blockhooks %}
       <div class="row">
-        <blockquote>{{ greeting.content }}</blockquote>
+        <blockquote>{{ blockhooks.content }}</blockquote>
       </div>
       {% endfor %}
       <!-- [END greetings] -->

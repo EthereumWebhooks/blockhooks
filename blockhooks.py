@@ -30,7 +30,7 @@ JINJA_ENVIRONMENT = jinja2.Environment(
     autoescape=True)
 # [END imports]
 
-DEFAULT_GUESTBOOK_NAME = 'default_guestbook'
+DEFAULT_BLOCKHOOKS_LIST_NAME = 'default_guestbook'
 
 
 # We set a parent key on the 'Greetings' to ensure that they are all
@@ -38,39 +38,39 @@ DEFAULT_GUESTBOOK_NAME = 'default_guestbook'
 # will be consistent. However, the write rate should be limited to
 # ~1/second.
 
-def guestbook_key():
-    """Constructs a Datastore key for a Guestbook entity.
+def blockhooks_key():
+    """Constructs a Datastore key for a Blockhooks entity.
 
-    We use DEFAULT_GUESTBOOK_NAME as the key.
+    We use DEFAULT_BLOCKHOOKS_LIST_NAME as the key.
     """
-    return ndb.Key('Guestbook', DEFAULT_GUESTBOOK_NAME)
+    return ndb.Key('Blockhooks', DEFAULT_BLOCKHOOKS_LIST_NAME)
 
 
-# [START greeting]
+# [START blockhooks]
 class Author(ndb.Model):
     """Sub model for representing an author."""
     identity = ndb.StringProperty(indexed=False)
     email = ndb.StringProperty(indexed=False)
 
 
-class Greeting(ndb.Model):
-    """A main model for representing an individual Guestbook entry."""
+class BlockHooks(ndb.Model):
+    """A main model for representing an individual BlockHooks entry."""
     author = ndb.StructuredProperty(Author)
     content = ndb.StringProperty(indexed=False)
     date = ndb.DateTimeProperty(auto_now_add=True)
-# [END greeting]
+# [END blockhooks]
 
 
 # [START main_page]
 class MainPage(webapp2.RequestHandler):
 
     def get(self):
-        greetings_query = Greeting.query(
-            ancestor=guestbook_key()).order(-Greeting.date)
-        greetings = greetings_query.fetch(10)
+        blockhooks_query = BlockHooks.query(
+            ancestor=blockhooks_key()).order(-BlockHooks.date)
+        blockhooks = blockhooks_query.fetch(10)
 
         template_values = {
-            'greetings': greetings,
+            'blockhooks': blockhooks,
         }
 
         template = JINJA_ENVIRONMENT.get_template('index.html')
@@ -87,9 +87,9 @@ class BlockHook(webapp2.RequestHandler):
         # single entity group will be consistent. However, the write
         # rate to a single entity group should be limited to
         # ~1/second.
-        greeting = Greeting(parent=guestbook_key())
-        greeting.content = self.request.get('address')
-        greeting.put()
+        blockhooks = BlockHooks(parent=blockhooks_key())
+        blockhooks.content = self.request.get('address')
+        blockhooks.put()
 
         self.redirect('/')
 # [END blockhook]
