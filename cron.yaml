@@ -1,0 +1,4 @@
+cron:
+- description: poll for new blocks
+  url: /_tasks/blockLoader
+  schedule: every 2 minutes

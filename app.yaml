@@ -12,7 +12,10 @@ handlers:
 - url: /bootstrap
   static_dir: bootstrap
 
+- url: /_tasks/blockLoader
+  script: events.app
+  login: admin
+
 - url: /.*
   script: blockhooks.app
 # [END handlers]
-
