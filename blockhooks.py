@@ -43,21 +43,15 @@ def blockhooks_key():
 
     We use DEFAULT_BLOCKHOOKS_LIST_NAME as the key.
     """
-    return ndb.Key('Blockhooks', DEFAULT_BLOCKHOOKS_LIST_NAME)
+    return ndb.Key('Hook', DEFAULT_BLOCKHOOKS_LIST_NAME)
 
 
 # [START blockhooks]
-class Author(ndb.Model):
-    """Sub model for representing an author."""
-    identity = ndb.StringProperty(indexed=False)
-    email = ndb.StringProperty(indexed=False)
-
-
-class BlockHooks(ndb.Model):
+class Hook(ndb.Model):
     """A main model for representing an individual BlockHooks entry."""
-    author = ndb.StructuredProperty(Author)
-    content = ndb.StringProperty(indexed=False)
-    date = ndb.DateTimeProperty(auto_now_add=True)
+    address = ndb.StringProperty(indexed=True, required=True, default="") # Address of the contract sending the event
+    abi = ndb.JsonProperty(indexed=False, required=True)    # ABI for event
+    uri = ndb.StringProperty(indexed=False)                 # URI (possibly templated) to query
 # [END blockhooks]
 
 
@@ -65,8 +59,8 @@ class BlockHooks(ndb.Model):
 class MainPage(webapp2.RequestHandler):
 
     def get(self):
-        blockhooks_query = BlockHooks.query(
-            ancestor=blockhooks_key()).order(-BlockHooks.date)
+        blockhooks_query = Hook.query(
+            ancestor=blockhooks_key()).order(-Hook.address)
         blockhooks = blockhooks_query.fetch(10)
 
         template_values = {
@@ -87,8 +81,10 @@ class BlockHook(webapp2.RequestHandler):
         # single entity group will be consistent. However, the write
         # rate to a single entity group should be limited to
         # ~1/second.
-        blockhooks = BlockHooks(parent=blockhooks_key())
-        blockhooks.content = self.request.get('address')
+        blockhooks = Hook(parent=blockhooks_key())
+        blockhooks.address = self.request.get('address')
+        blockhooks.abi = self.request.get('abi')
+        blockhooks.uri = self.request.get('uri')
         blockhooks.put()
 
         self.redirect('/')

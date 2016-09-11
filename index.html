@@ -50,14 +50,14 @@
       <form action="/addblockhook?guestbook_name={{ guestbook_name }}" method="post">
         <div>Contract Address: <textarea name="address" class="input-block-level" rows="1"></textarea></div>
 	<div>ABI: <textarea name="abi" class="input-block-level" rows="1"></textarea></div>
-	<div>URI: <textarea name="url" class="input-block-level" rows="1"></textarea></div>
+	<div>URI: <textarea name="uri" class="input-block-level" rows="1"></textarea></div>
         <div><input type="submit" class="btn btn-large btn-primary" value="Add BlockHook"></div>
       </form>
       <hr>
       <!-- [START greetings] -->
       {% for blockhooks in blockhooks %}
       <div class="row">
-        <blockquote>{{ blockhooks.content }}</blockquote>
+        <blockquote>{{ blockhooks.address }}, {{ blockhooks.abi }}, {{ blockhooks.uri }}</blockquote>
       </div>
       {% endfor %}
       <!-- [END greetings] -->
