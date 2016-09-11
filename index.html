@@ -59,9 +59,11 @@
       <ul>
       <!-- [START greetings] -->
       {% for blockhooks in blockhooks %}
-      <li>
-        {{ blockhooks.address }}, {{ blockhooks.abi }}, {{ blockhooks.uri }}
-      </li>
+      <blockquote>
+        <div>Contract Address: {{ blockhooks.address }}</div>
+        <div>ABI: {{ blockhooks.abi }}</div>
+        <div>URI: {{ blockhooks.uri }}</div>
+      </blockquote>
       {% endfor %}
       </ul>
       <!-- [END greetings] -->
