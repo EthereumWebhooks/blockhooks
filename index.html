@@ -49,18 +49,21 @@
     <div class="container">
       <form action="/addblockhook" method="post">
         <div>Contract Address: <textarea name="address" class="input-block-level" rows="1"></textarea></div>
-	<div>ABI: <textarea name="abi" class="input-block-level" rows="1"></textarea></div>
+	<div>ABI: <textarea name="abi" class="input-block-level" rows="3"></textarea></div>
 	<div>URI: <textarea name="uri" class="input-block-level" rows="1"></textarea></div>
-        <div><input type="submit" class="pull-right btn btn-large btn-primary" value="Add"></div>
+        <div><input type="submit" class="pull-right btn btn-large btn-primary" value="Add" name="addhook"></div>
+        <div><input type="submit" class="pull-right btn btn-large" value="Clear All" name="clearhooks"></div>
       </form>
-	<br clear="all">
-      <hr>
+      <br clear="all">
+      <h3>Active Hooks</h3>
+      <ul>
       <!-- [START greetings] -->
       {% for blockhooks in blockhooks %}
-      <div class="row">
-        <blockquote>{{ blockhooks.address }}, {{ blockhooks.abi }}, {{ blockhooks.uri }}</blockquote>
-      </div>
+      <li>
+        {{ blockhooks.address }}, {{ blockhooks.abi }}, {{ blockhooks.uri }}
+      </li>
       {% endfor %}
+      </ul>
       <!-- [END greetings] -->
 
     </div>
